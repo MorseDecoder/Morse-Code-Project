@@ -6,17 +6,17 @@ const int colorR = 0;
 const int colorG = 100;
 const int colorB = 0;
 const int pinSound = A1;
-const int pinTouch = A2;
+const int pinButton = 2;
 
 const int noise = 250;
 int current_offset = 0;
 void setup()
 {
   pinMode(pinSound, INPUT);
-  pinMode(pinTouch, INPUT);
+  pinMode(pinButton, INPUT);
     lcd.begin(16, 2);
     lcd.setCursor(0, 0);
-    lcd.setRGB(colorR, colorG, colorB);
+    //lcd.setRGB(colorR, colorG, colorB);
     current_offset= 0;
     Serial.begin(9600);
 }
@@ -31,10 +31,10 @@ bool space(false);
 bool oneinput(false);
 void loop() 
 {
-   if(analogRead(pinTouch) > 250)
-     {
-       lcd.clear();
-     }
+   if(digitalRead(pinButton) == HIGH)
+    {
+      lcd.clear();
+    }
   if(current_offset == 4)
    {
       print_letter();
@@ -65,17 +65,17 @@ void clockloop()
     print_letter();
     oneinput = false;
     }
-  else if(shortcut > 2000 && space == false)
+  else if(shortcut > 2000 && space == true)
    {
      current_offset = 0;
      lcd.print(' ');
-     space = true;
+     space = false;
      oneinput = false;   
    }
 } 
 void analyse()
 {
-  space = false;
+  space = true;
   int sensorbuffer = 0;
   for(int ppp = 0; ppp <= 10; ++ppp)
   {
